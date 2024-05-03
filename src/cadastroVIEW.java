@@ -1,3 +1,6 @@
+
+import javax.swing.JOptionPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -149,7 +152,18 @@ public class cadastroVIEW extends javax.swing.JFrame {
         produto.setStatus(status);
         
         ProdutosDAO produtodao = new ProdutosDAO();
-        produtodao.cadastrarProduto(produto);
+        // Sisteminha de Boolean, poderia ter feito isso em produtoDAO, mas está de bom tamanho pra organização.
+        boolean sucesso;
+        sucesso = produtodao.cadastrarProduto(produto);
+        
+        if (sucesso) {
+            JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!");
+            // Limpando os campos após o cadastro
+            cadastroNome.setText("");
+            cadastroValor.setText("");
+        } else {
+            JOptionPane.showMessageDialog(this, "Falha ao cadastrar o produto. Tente novamente.");
+        }
         
     }//GEN-LAST:event_btnCadastrarActionPerformed
 

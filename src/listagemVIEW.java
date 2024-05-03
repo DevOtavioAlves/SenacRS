@@ -1,5 +1,8 @@
 
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -13,12 +16,24 @@ import javax.swing.table.DefaultTableModel;
  */
 public class listagemVIEW extends javax.swing.JFrame {
 
-    /**
-     * Creates new form listagemVIEW
-     */
+
+    private Connection con;
+    private DefaultTableModel tableModel;
+    
     public listagemVIEW() {
         initComponents();
         listarProdutos();
+        initializeTableModel();
+    }
+    
+    private void initializeTableModel() {
+        tableModel = new DefaultTableModel();
+        tableModel.addColumn("ID");
+        tableModel.addColumn("Nome");
+        tableModel.addColumn("Valor");
+        tableModel.addColumn("Status");
+        
+        listaProdutos.setModel(tableModel);
     }
 
     /**
@@ -153,6 +168,7 @@ public class listagemVIEW extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
 
+    
     /**
      * @param args the command line arguments
      */
@@ -201,25 +217,37 @@ public class listagemVIEW extends javax.swing.JFrame {
     private javax.swing.JTable listaProdutos;
     // End of variables declaration//GEN-END:variables
 
-    private void listarProdutos(){
-        try {
-            ProdutosDAO produtosdao = new ProdutosDAO();
-            
-            DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
-            model.setNumRows(0);
-            
-            ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutos();
-            
-            for(int i = 0; i < listagem.size(); i++){
-                model.addRow(new Object[]{
-                    listagem.get(i).getId(),
-                    listagem.get(i).getNome(),
-                    listagem.get(i).getValor(),
-                    listagem.get(i).getStatus()
-                });
-            }
-        } catch (Exception e) {
+    private void listarProdutos(){ // Agradeço a cada dia desse script estar pronto.
+            try {
+        // Conexão com o banco de dados
+        conectaDAO conecta = new conectaDAO();
+        Connection con = conecta.connectDB();
+
+        // Cria um objeto Statement para executar a consulta
+        Statement stmt = con.createStatement();
+
+        // Executa a consulta para listar os produtos
+        ResultSet rs = stmt.executeQuery("SELECT * FROM produtos");
+
+        // Cria um modelo de tabela para armazenar os dados
+        tableModel = (DefaultTableModel) listaProdutos.getModel();
+        tableModel.setNumRows(0);
+
+        // Itera sobre os resultados da consulta e adiciona às linhas da tabela
+        while (rs.next()) {
+            tableModel.addRow(new Object[]{
+                rs.getInt("id"),
+                rs.getString("nome"),
+                rs.getDouble("valor"),
+                rs.getBoolean("status")
+            });
         }
-    
+
+        // Fecha a conexão com o banco de dados
+        con.close();
+    } catch (SQLException e) {
+        // Trata a exceção caso ocorra um erro de conexão ou consulta
+        System.out.println("Erro ao listar produtos: " + e.getMessage());
+    }
     }
 }
