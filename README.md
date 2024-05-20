@@ -7,3 +7,5 @@ Na tela de "Consultar Produtos" há uma listagem de produtos com "ID, Nome, Valo
 O sistema em si está bem completo, até por que, vem com banco de dados incluido, auxiliando um pouco mais na construção do mesmo.
 
 Tecnologias Utilizadas no Projeto: Java e MySQL
+
+( Caso esse código passe de 1.000 linhas ao total, faça uma reza antes de tentar ajustar algo :)
