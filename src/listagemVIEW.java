@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Adm
+ * @author Adm, @DevOtavioAlves
  */
 public class listagemVIEW extends javax.swing.JFrame {
 
