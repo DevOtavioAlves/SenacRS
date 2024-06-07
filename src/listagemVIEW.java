@@ -17,24 +17,24 @@ import javax.swing.table.DefaultTableModel;
 public class listagemVIEW extends javax.swing.JFrame {
 
 
-    private Connection con;
-    private DefaultTableModel tableModel;
+         private Connection con;
+         private DefaultTableModel tableModel;
     
-    public listagemVIEW() {
-        initComponents();
-        listarProdutos();
-        initializeTableModel();
-    }
+         public listagemVIEW() {
+                  initComponents();
+                  listarProdutos();
+                  initializeTableModel();
+        }
     
-    private void initializeTableModel() {
-        tableModel = new DefaultTableModel();
-        tableModel.addColumn("ID");
-        tableModel.addColumn("Nome");
-        tableModel.addColumn("Valor");
-        tableModel.addColumn("Status");
-        
-        listaProdutos.setModel(tableModel);
-    }
+         private void initializeTableModel() {
+                  tableModel = new DefaultTableModel();
+                  tableModel.addColumn("ID");
+                  tableModel.addColumn("Nome");
+                  tableModel.addColumn("Valor");
+                  tableModel.addColumn("Vendido");
+
+                  listaProdutos.setModel(tableModel);
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -66,7 +66,7 @@ public class listagemVIEW extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "ID", "Nome", "Valor", "Status"
+                "ID", "Nome", "Valor", "Vendido"
             }
         ));
         jScrollPane1.setViewportView(listaProdutos);
@@ -151,58 +151,58 @@ public class listagemVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-        String id = id_produto_venda.getText();
+         String id = id_produto_venda.getText();
         
-        ProdutosDAO produtosdao = new ProdutosDAO();
+         ProdutosDAO produtosdao = new ProdutosDAO();
         
-        //produtosdao.venderProduto(Integer.parseInt(id));
-        listarProdutos();
+         //produtosdao.venderProduto(Integer.parseInt(id));
+         listarProdutos();
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
-        //vendasVIEW vendas = new vendasVIEW(); 
-        //vendas.setVisible(true);
+         //vendasVIEW vendas = new vendasVIEW(); 
+         //vendas.setVisible(true);
     }//GEN-LAST:event_btnVendasActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
-        this.dispose();
+         this.dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+         public static void main(String args[]) {
+            /* Set the Nimbus look and feel */
+            //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+            /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+             * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+             */
+            try {
+                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                    if ("Nimbus".equals(info.getName())) {
+                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                        break;
+                    }
                 }
+            } catch (ClassNotFoundException ex) {
+                java.util.logging.Logger.getLogger(listagemVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (InstantiationException ex) {
+                java.util.logging.Logger.getLogger(listagemVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                java.util.logging.Logger.getLogger(listagemVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+                java.util.logging.Logger.getLogger(listagemVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(listagemVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(listagemVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(listagemVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(listagemVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+            //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new listagemVIEW().setVisible(true);
-            }
-        });
-    }
+            /* Create and display the form */
+                  java.awt.EventQueue.invokeLater(new Runnable() {
+                           public void run() {
+                           new listagemVIEW().setVisible(true);
+                           }
+                  });
+        }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnVendas;
@@ -217,37 +217,37 @@ public class listagemVIEW extends javax.swing.JFrame {
     private javax.swing.JTable listaProdutos;
     // End of variables declaration//GEN-END:variables
 
-    private void listarProdutos(){ // Agradeço a cada dia desse script estar pronto.
-            try {
-        // Conexão com o banco de dados
-        conectaDAO conecta = new conectaDAO();
-        Connection con = conecta.connectDB();
+         private void listarProdutos(){ // Agradeço a cada dia desse script estar pronto.
+                  try {
+                  // Conexão com o banco de dados
+                  conectaDAO conecta = new conectaDAO();
+                  Connection con = conecta.connectDB();
 
-        // Cria um objeto Statement para executar a consulta
-        Statement stmt = con.createStatement();
+                  // Cria um objeto Statement para executar a consulta
+                  Statement stmt = con.createStatement();
 
-        // Executa a consulta para listar os produtos
-        ResultSet rs = stmt.executeQuery("SELECT * FROM produtos");
+                  // Executa a consulta para listar os produtos
+                  ResultSet rs = stmt.executeQuery("SELECT * FROM produtos");
 
-        // Cria um modelo de tabela para armazenar os dados
-        tableModel = (DefaultTableModel) listaProdutos.getModel();
-        tableModel.setNumRows(0);
+                  // Cria um modelo de tabela para armazenar os dados
+                  tableModel = (DefaultTableModel) listaProdutos.getModel();
+                  tableModel.setNumRows(0);
 
-        // Itera sobre os resultados da consulta e adiciona às linhas da tabela
-        while (rs.next()) {
-            tableModel.addRow(new Object[]{
-                rs.getInt("id"),
-                rs.getString("nome"),
-                rs.getDouble("valor"),
-                rs.getBoolean("status")
-            });
-        }
+                  // Itera sobre os resultados da consulta e adiciona às linhas da tabela
+                  while (rs.next()) {
+                           tableModel.addRow(new Object[]{
+                                    rs.getInt("id"),
+                                    rs.getString("nome"),
+                                    rs.getDouble("valor"),
+                                    rs.getBoolean("vendido")
+                            });
+                  }
 
-        // Fecha a conexão com o banco de dados
-        con.close();
-    } catch (SQLException e) {
-        // Trata a exceção caso ocorra um erro de conexão ou consulta
-        System.out.println("Erro ao listar produtos: " + e.getMessage());
-    }
-    }
+                  // Fecha a conexão com o banco de dados
+                  con.close();
+                  } catch (SQLException e) {
+                           // Trata a exceção caso ocorra um erro de conexão ou consulta
+                           System.out.println("Erro ao listar produtos: " + e.getMessage());
+                  }
+         }
 }
