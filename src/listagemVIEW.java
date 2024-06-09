@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class listagemVIEW extends javax.swing.JFrame {
 
-
+         private javax.swing.JTable tabelaProdutos;
          private Connection con;
          private DefaultTableModel tableModel;
     
@@ -155,7 +155,8 @@ public class listagemVIEW extends javax.swing.JFrame {
          int selectedRow = tabelaProdutos.getSelectedRow();
          if (selectedRow >= 0) {
                   int produtoId = Integer.parseInt(tabelaProdutos.getValueAt(selectedRow, 0).toString());
-                  venderProduto(produtoId);
+                  ProdutosDAO produtosDAO = new ProdutosDAO();
+                  produtosDAO.venderProduto(produtoId);
          } else {
                   JOptionPane.showMessageDialog(null, "Selecione um produto para vender.");
          }
