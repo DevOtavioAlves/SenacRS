@@ -8,4 +8,4 @@ O sistema em si está bem completo, até por que, vem com banco de dados incluid
 
 Tecnologias Utilizadas no Projeto: Java e MySQL
 
-( Caso esse código passe de 1.000 linhas ao total, faça uma reza antes de tentar ajustar algo :)
+( Algumas observações deste projeto, uma delas é NÃO COPIE O CÓDIGO, e tome um anti-depressivo antes de ver este código, divirta-se )
