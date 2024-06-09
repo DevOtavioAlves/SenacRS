@@ -11,6 +11,7 @@
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 
 public class ProdutosDAO {
@@ -50,5 +51,28 @@ public class ProdutosDAO {
                            }
                   }
     }
+         
+         public void venderProduto(int produtoId) {
+                  // Conectar ao banco de dados
+                  conectaDAO conexao = new conectaDAO();
+                  Connection conn = conexao.connectDB();
+
+                  // Atualizar o status do produto para "vendido"
+                  String sql = "UPDATE produtos SET status = 'vendido' WHERE id = ?";
+
+                  try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                           stmt.setInt(1, produtoId);
+                           stmt.executeUpdate();
+                           JOptionPane.showMessageDialog(null, "Produto vendido com sucesso!");
+                  } catch (SQLException e) {
+                           JOptionPane.showMessageDialog(null, "Erro ao vender produto: " + e.getMessage());
+                  } finally {
+                           try {
+                           conn.close();
+                           } catch (SQLException e) {
+                                    e.printStackTrace();
+                           }
+                  }
+         }
 }
 
