@@ -8,9 +8,9 @@
  * @author Adm, @DevOtavioAlves
  */
 
-import java.sql.PreparedStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 
@@ -18,6 +18,7 @@ public class ProdutosDAO {
     
          Connection conn;
          PreparedStatement prep;
+         
     
          public boolean cadastrarProduto(ProdutosDTO produto) {
          conn = new conectaDAO().connectDB(); // Conexão com o banco de dados
@@ -59,7 +60,7 @@ public class ProdutosDAO {
 
                   try {
                            con = conexao.connectDB();
-                           String sql = "UPDATE produtos SET status = 'vendido' WHERE id = ?";
+                           String sql = "UPDATE produtos SET vendido = 'S' WHERE id = ?";
                            PreparedStatement stmt = con.prepareStatement(sql);
 
                            stmt.setInt(1, produtoId);
@@ -77,5 +78,24 @@ public class ProdutosDAO {
                            }
                   }
          }
+         public List<ProdutosDTO> listarProdutosVendidos() {
+                  List<ProdutosDTO> produtosVendidos = new ArrayList<>();
+                  String sql = "SELECT * FROM produtos WHERE vendido = 'S'";
+                  try (Connection conn = new conectaDAO().connectDB();
+                           Statement stmt = conn.createStatement();
+                           ResultSet rs = stmt.executeQuery(sql)) {
+                                    while (rs.next()) {
+                                             ProdutosDTO produto = new ProdutosDTO();
+                                             produto.setId(rs.getInt("id"));
+                                             produto.setNome(rs.getString("nome"));
+                                             produto.setValor(rs.getInt("valor"));
+                                             produto.setVendido(rs.getString("vendido"));
+                                             produtosVendidos.add(produto);
+                                    }
+                           } catch (SQLException e) {
+                                    System.out.println(e.getMessage());
+                           }
+                  return produtosVendidos;
+        }
 }
 

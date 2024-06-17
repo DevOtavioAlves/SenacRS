@@ -3,18 +3,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
-/**
- *
- * @author Sh00TingB0y
- */
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+
 public class vendasVIEW extends javax.swing.JFrame {
 
+         private ProdutosDAO produtosDAO;
     /**
      * Creates new form vendasVIEW
      */
-    public vendasVIEW() {
-        initComponents();
-    }
+         public vendasVIEW() {
+                  produtosDAO = new ProdutosDAO();
+                  initComponents();
+                  carregarProdutosVendidos();
+         }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -98,6 +100,15 @@ public class vendasVIEW extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    
+         private void carregarProdutosVendidos() {
+                  List<ProdutosDTO> produtosVendidos = produtosDAO.listarProdutosVendidos();
+                  DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                  for (ProdutosDTO produto : produtosVendidos) {
+                          model.addRow(new Object[]{produto.getId(), produto.getNome(), produto.getValor()});
+                  }
+         }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
