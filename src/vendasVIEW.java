@@ -3,8 +3,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class vendasVIEW extends javax.swing.JFrame {
 
@@ -13,7 +19,7 @@ public class vendasVIEW extends javax.swing.JFrame {
     /**
      * Creates new form vendasVIEW
      */
-         public vendasVIEW() {
+         public vendasVIEW() throws SQLException {
                   produtosDAO = new ProdutosDAO();
                   initComponents();
                   initializeTableModel();
@@ -113,12 +119,32 @@ public class vendasVIEW extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     
-         private void carregarProdutosVendidos() {
-                  List<ProdutosDTO> produtosVendidos = produtosDAO.listarProdutosVendidos();
-                  tableModel.setRowCount(0); // Clear the table model before loading new data
-                  for (ProdutosDTO produto : produtosVendidos) {
-                           tableModel.addRow(new Object[]{produto.getId(), produto.getNome(), produto.getValor(), produto.getVendido()});
-                  }
+         private void carregarProdutosVendidos() throws SQLException {
+             
+                  // Conexão com o banco de dados
+                    conectaDAO conecta = new conectaDAO();
+                    Connection con = conecta.connectDB();
+
+                    // Cria um objeto Statement para executar a consulta
+                    Statement stmt = con.createStatement();
+
+                    List<ProdutosDTO> produtosVendidos = produtosDAO.listarProdutosVendidos();
+                    tableModel.setRowCount(0); // Clear the table model before loading new data
+
+                    try {
+                        ResultSet rs = stmt.executeQuery("SELECT * FROM produtos");
+
+                        while (rs.next()) {
+                            int id = rs.getInt("id");
+                            String nome = rs.getString("nome");
+                            double valor = rs.getDouble("valor");
+                            String vendido = rs.getString("vendido");
+
+                            tableModel.addRow(new Object[]{id, nome, valor, vendido});
+                        }
+                    } catch (SQLException ex) {
+                        java.util.logging.Logger.getLogger(vendasVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                    }
          }
     
     public static void main(String args[]) {
@@ -148,7 +174,11 @@ public class vendasVIEW extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new vendasVIEW().setVisible(true);
+                try {
+                    new vendasVIEW().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(vendasVIEW.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

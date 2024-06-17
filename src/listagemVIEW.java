@@ -6,6 +6,8 @@ import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
 import java.util.List; // Importando a classe List
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -176,7 +178,12 @@ public class listagemVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
-         vendasVIEW vendas = new vendasVIEW(); 
+         vendasVIEW vendas = null; 
+             try {
+                 vendas = new vendasVIEW();
+             } catch (SQLException ex) {
+                 Logger.getLogger(listagemVIEW.class.getName()).log(Level.SEVERE, null, ex);
+             }
          vendas.setVisible(true);
     }//GEN-LAST:event_btnVendasActionPerformed
 
@@ -260,7 +267,7 @@ public class listagemVIEW extends javax.swing.JFrame {
                                              rs.getInt("id"),
                                              rs.getString("nome"),
                                              rs.getDouble("valor"),
-                                             rs.getBoolean("vendido")
+                                             rs.getString("vendido")
                                     });
                            }
 

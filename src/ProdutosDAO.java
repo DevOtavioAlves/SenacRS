@@ -95,7 +95,7 @@ public class ProdutosDAO {
 
                   try {
                            con = conexao.connectDB();
-                           String sql = "UPDATE produtos SET vendido = 'S' WHERE id = ?";
+                           String sql = "UPDATE produtos SET vendido = 'Vendido' WHERE id = ?";
                            PreparedStatement stmt = con.prepareStatement(sql);
 
                            stmt.setInt(1, produtoId);
