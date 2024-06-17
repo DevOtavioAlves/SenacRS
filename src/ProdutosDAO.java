@@ -11,40 +11,71 @@
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 
 public class ProdutosDAO {
     
-    Connection conn;
-    PreparedStatement prep;
+         Connection conn;
+         PreparedStatement prep;
     
-    public boolean cadastrarProduto(ProdutosDTO produto) {
-        conn = new conectaDAO().connectDB(); // Supondo que você tenha uma classe ConectaDAO para a conexão com o banco de dados
-        String sql = "INSERT INTO produtos (nome, valor, status) VALUES (?, ?, ?)";
-        
-        try {
-            prep = conn.prepareStatement(sql);
-            prep.setString(1, produto.getNome());
-            prep.setInt(2, produto.getValor());
-            prep.setString(3, produto.getStatus());
-            
-            int rowsAffected = prep.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            System.err.println("Erro ao cadastrar o produto: " + e);
-            return false;
-        } finally {
-            try {
-                if (prep != null) {
-                    prep.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                System.err.println("Erro ao fechar a conexão: " + ex);
-            }
-        }
+         public boolean cadastrarProduto(ProdutosDTO produto) {
+         conn = new conectaDAO().connectDB(); // Conexão com o banco de dados
+         
+                  String sql = "INSERT INTO produtos (nome, valor, vendido) VALUES (?, ?, ?)";
+
+                  try {
+                           prep = conn.prepareStatement(sql);
+                           prep.setString(1, produto.getNome());
+                           prep.setInt(2, produto.getValor());
+                           prep.setString(3, produto.getVendido());
+
+                           int rowsAffected = prep.executeUpdate();
+                           return rowsAffected > 0;
+                           
+                  } catch (SQLException e) {
+                           
+                           System.err.println("Erro ao cadastrar o produto: " + e);
+                           return false;
+                           
+                  } finally {
+                           try {
+                                    if (prep != null) {
+                                             prep.close();
+                                    }
+                                    if (conn != null) {
+                                             conn.close();
+                                    }
+                           } catch (SQLException ex) {
+                                    System.err.println("Erro ao fechar a conexão: " + ex);
+                           }
+                  }
     }
+         
+         public void venderProduto(int produtoId) {
+         
+         conectaDAO conexao = new conectaDAO();
+         Connection con = null;
+
+                  try {
+                           con = conexao.connectDB();
+                           String sql = "UPDATE produtos SET status = 'vendido' WHERE id = ?";
+                           PreparedStatement stmt = con.prepareStatement(sql);
+
+                           stmt.setInt(1, produtoId);
+                           stmt.executeUpdate();
+                           JOptionPane.showMessageDialog(null, "Produto vendido com sucesso!");
+                  } catch (SQLException e) {
+                           JOptionPane.showMessageDialog(null, "Erro ao vender produto: " + e.getMessage());
+                  } finally {
+                           if (con != null) {
+                                    try {
+                                             con.close();
+                                    } catch (SQLException e) {
+                                             e.printStackTrace();
+                                    }
+                           }
+                  }
+         }
 }
 

@@ -15,9 +15,9 @@ public class cadastroVIEW extends javax.swing.JFrame {
     /**
      * Creates new form cadastroVIEW
      */
-    public cadastroVIEW() {
-        initComponents();
-    }
+         public cadastroVIEW() {
+                  initComponents();
+         }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -143,33 +143,33 @@ public class cadastroVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_cadastroNomeActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        ProdutosDTO produto = new ProdutosDTO();
-        String nome = cadastroNome.getText();
-        String valor = cadastroValor.getText();
-        String status = "A Venda";
-        produto.setNome(nome);
-        produto.setValor(Integer.parseInt(valor));
-        produto.setStatus(status);
-        
-        ProdutosDAO produtodao = new ProdutosDAO();
-        // Sisteminha de Boolean, poderia ter feito isso em produtoDAO, mas está de bom tamanho pra organização.
-        boolean sucesso;
-        sucesso = produtodao.cadastrarProduto(produto);
-        
-        if (sucesso) {
-            JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!");
-            // Limpando os campos após o cadastro
-            cadastroNome.setText("");
-            cadastroValor.setText("");
-        } else {
-            JOptionPane.showMessageDialog(this, "Falha ao cadastrar o produto. Tente novamente.");
-        }
+         ProdutosDTO produto = new ProdutosDTO();
+         String nome = cadastroNome.getText();
+         String valor = cadastroValor.getText();
+         String vendido = "A Venda";
+         produto.setNome(nome);
+         produto.setValor(Integer.parseInt(valor));
+         produto.getVendido(vendido);
+
+         ProdutosDAO produtodao = new ProdutosDAO();
+         // Sisteminha de Boolean, poderia ter feito isso em produtoDAO, mas está de bom tamanho pra organização.
+         boolean sucesso;
+         sucesso = produtodao.cadastrarProduto(produto);
+
+         if (sucesso) {
+                  JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!");
+                  // Limpando os campos após o cadastro
+                  cadastroNome.setText("");
+                  cadastroValor.setText("");
+         } else {
+                  JOptionPane.showMessageDialog(this, "Falha ao cadastrar o produto. Tente novamente.");
+         }
         
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed
-        listagemVIEW listagem = new listagemVIEW(); 
-        listagem.setVisible(true);
+         listagemVIEW listagem = new listagemVIEW(); 
+         listagem.setVisible(true);
     }//GEN-LAST:event_btnProdutosActionPerformed
 
     /**
@@ -200,11 +200,11 @@ public class cadastroVIEW extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new cadastroVIEW().setVisible(true);
-            }
-        });
+         java.awt.EventQueue.invokeLater(new Runnable() {
+                  public void run() {
+                  new cadastroVIEW().setVisible(true);
+                  }
+         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
