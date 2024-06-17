@@ -9,15 +9,27 @@ import java.util.List;
 public class vendasVIEW extends javax.swing.JFrame {
 
          private ProdutosDAO produtosDAO;
+         private DefaultTableModel tableModel;
     /**
      * Creates new form vendasVIEW
      */
          public vendasVIEW() {
                   produtosDAO = new ProdutosDAO();
                   initComponents();
+                  initializeTableModel();
                   carregarProdutosVendidos();
          }
 
+         private void initializeTableModel() {
+                  tableModel = new DefaultTableModel();
+                  tableModel.addColumn("ID");
+                  tableModel.addColumn("Nome");
+                  tableModel.addColumn("Valor");
+                  tableModel.addColumn("Vendido");
+
+                  jTable1.setModel(tableModel);
+}
+         
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -103,9 +115,9 @@ public class vendasVIEW extends javax.swing.JFrame {
     
          private void carregarProdutosVendidos() {
                   List<ProdutosDTO> produtosVendidos = produtosDAO.listarProdutosVendidos();
-                  DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                  tableModel.setRowCount(0); // Clear the table model before loading new data
                   for (ProdutosDTO produto : produtosVendidos) {
-                          model.addRow(new Object[]{produto.getId(), produto.getNome(), produto.getValor()});
+                           tableModel.addRow(new Object[]{produto.getId(), produto.getNome(), produto.getValor(), produto.getVendido()});
                   }
          }
     
