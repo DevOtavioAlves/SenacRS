@@ -3,8 +3,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.*;
+import java.util.List; // Importando a classe List
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -17,11 +20,12 @@ import javax.swing.table.DefaultTableModel;
  */
 public class listagemVIEW extends javax.swing.JFrame {
 
-         private javax.swing.JTable tabelaProdutos;
          private Connection con;
          private DefaultTableModel tableModel;
+         private ProdutosDAO produtosDAO;
     
          public listagemVIEW() {
+                  produtosDAO = new ProdutosDAO();
                   initComponents();
                   listarProdutos();
                   initializeTableModel();
@@ -35,6 +39,7 @@ public class listagemVIEW extends javax.swing.JFrame {
                   tableModel.addColumn("Vendido");
 
                   listaProdutos.setModel(tableModel);
+                  carregarProdutos();
         }
 
     /**
@@ -151,19 +156,34 @@ public class listagemVIEW extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-         int selectedRow = tabelaProdutos.getSelectedRow();
-         if (selectedRow >= 0) {
-                  int produtoId = Integer.parseInt(tabelaProdutos.getValueAt(selectedRow, 0).toString());
-                  ProdutosDAO produtosDAO = new ProdutosDAO();
-                  produtosDAO.venderProduto(produtoId);
-         } else {
-                  JOptionPane.showMessageDialog(null, "Selecione um produto para vender.");
+         private void carregarProdutos() {
+                  List<ProdutosDTO> produtos = produtosDAO.listarProdutos();
+                  DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
+                  model.setRowCount(0); // Limpar tabela antes de carregar
+                  for (ProdutosDTO produto : produtos) {
+                           model.addRow(new Object[]{produto.getId(), produto.getNome(), produto.getValor(), produto.getVendido()});
+                  }
          }
+    
+    private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
+                String produtoIdStr = id_produto_venda.getText();
+           if (produtoIdStr.isEmpty()) {
+               JOptionPane.showMessageDialog(null, "Insira o ID do produto para vender.");
+           } else {
+               int produtoId = Integer.parseInt(produtoIdStr);
+               ProdutosDAO produtosDAO = new ProdutosDAO();
+               produtosDAO.venderProduto(produtoId);
+               carregarProdutos();
+           }
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
-         vendasVIEW vendas = new vendasVIEW(); 
+         vendasVIEW vendas = null; 
+             try {
+                 vendas = new vendasVIEW();
+             } catch (SQLException ex) {
+                 Logger.getLogger(listagemVIEW.class.getName()).log(Level.SEVERE, null, ex);
+             }
          vendas.setVisible(true);
     }//GEN-LAST:event_btnVendasActionPerformed
 
@@ -222,35 +242,41 @@ public class listagemVIEW extends javax.swing.JFrame {
 
          private void listarProdutos(){ // Agradeço a cada dia desse script estar pronto.
                   try {
-                  // Conexão com o banco de dados
-                  conectaDAO conecta = new conectaDAO();
-                  Connection con = conecta.connectDB();
+                           // Conexão com o banco de dados
+                           conectaDAO conecta = new conectaDAO();
+                           Connection con = conecta.connectDB();
 
-                  // Cria um objeto Statement para executar a consulta
-                  Statement stmt = con.createStatement();
+                           // Cria um objeto Statement para executar a consulta
+                           Statement stmt = con.createStatement();
 
-                  // Executa a consulta para listar os produtos
-                  ResultSet rs = stmt.executeQuery("SELECT * FROM produtos");
+                           // Executa a consulta para listar os produtos
+                           ResultSet rs = stmt.executeQuery("SELECT * FROM produtos");
 
-                  // Cria um modelo de tabela para armazenar os dados
-                  tableModel = (DefaultTableModel) listaProdutos.getModel();
-                  tableModel.setNumRows(0);
+                           // Verifica se o tableModel está inicializado
+                           if (tableModel == null) {
+                                    System.err.println("TableModel não inicializado corretamente.");
+                                    return;
+                           }
 
-                  // Itera sobre os resultados da consulta e adiciona às linhas da tabela
-                  while (rs.next()) {
-                           tableModel.addRow(new Object[]{
-                                    rs.getInt("id"),
-                                    rs.getString("nome"),
-                                    rs.getDouble("valor"),
-                                    rs.getBoolean("vendido")
-                            });
-                  }
+                           // Limpa o modelo antes de carregar novos dados
+                           tableModel.setRowCount(0);
 
-                  // Fecha a conexão com o banco de dados
-                  con.close();
-                  } catch (SQLException e) {
-                           // Trata a exceção caso ocorra um erro de conexão ou consulta
-                           System.out.println("Erro ao listar produtos: " + e.getMessage());
-                  }
+                           // Itera sobre os resultados da consulta e adiciona às linhas da tabela
+                           while (rs.next()) {
+                                    tableModel.addRow(new Object[]{
+                                             rs.getInt("id"),
+                                             rs.getString("nome"),
+                                             rs.getDouble("valor"),
+                                             rs.getString("vendido")
+                                    });
+                           }
+
+                            // Fecha a conexão com o banco de dados
+                            con.close();
+                           } catch (SQLException e) {
+                                    // Trata a exceção caso ocorra um erro de conexão ou consulta
+                                    System.out.println("Erro ao listar produtos: " + e.getMessage());
+                                    e.printStackTrace(); // Imprime o stack trace para diagnóstico
+                           }
          }
 }

@@ -146,7 +146,7 @@ public class cadastroVIEW extends javax.swing.JFrame {
          ProdutosDTO produto = new ProdutosDTO();
          String nome = cadastroNome.getText();
          String valor = cadastroValor.getText();
-         String vendido = "A Venda";
+         String vendido = "A venda";
          produto.setNome(nome);
          produto.setValor(Integer.parseInt(valor));
          produto.getVendido(vendido);

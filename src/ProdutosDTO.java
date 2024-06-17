@@ -45,5 +45,9 @@ public class ProdutosDTO {
          public void getVendido(String vendido) {
                   this.vendido = vendido;
          }
+         
+         public void setVendido(String vendido) {
+                  this.vendido = vendido;
+         }
     
 }

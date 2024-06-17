@@ -8,9 +8,9 @@
  * @author Adm, @DevOtavioAlves
  */
 
-import java.sql.PreparedStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 
@@ -18,7 +18,43 @@ public class ProdutosDAO {
     
          Connection conn;
          PreparedStatement prep;
-    
+         
+         
+         public List<ProdutosDTO> listarProdutos() {
+                  List<ProdutosDTO> produtos = new ArrayList<>();
+                  conn = new conectaDAO().connectDB(); // Conexão com o banco de dados
+
+                  String sql = "SELECT id, nome, valor, vendido FROM produtos";
+
+                  try {
+                           prep = conn.prepareStatement(sql);
+                           ResultSet rs = prep.executeQuery();
+
+                           while (rs.next()) {
+                                    ProdutosDTO produto = new ProdutosDTO();
+                                    produto.setId(rs.getInt("id"));
+                                    produto.setNome(rs.getString("nome"));
+                                    produto.setValor(rs.getInt("valor"));
+                                    produto.setVendido(rs.getString("vendido"));
+                                    produtos.add(produto);
+                           }
+                  } catch (SQLException e) {
+                           System.err.println("Erro ao listar produtos: " + e);
+                  } finally {
+                           try {
+                                    if (prep != null) {
+                                             prep.close();
+                                    }
+                                    if (conn != null) {
+                                             conn.close();
+                           }
+                           } catch (SQLException ex) {
+                                    System.err.println("Erro ao fechar a conexão: " + ex);
+                           }
+                  }
+                  return produtos;
+         }
+         
          public boolean cadastrarProduto(ProdutosDTO produto) {
          conn = new conectaDAO().connectDB(); // Conexão com o banco de dados
          
@@ -59,7 +95,7 @@ public class ProdutosDAO {
 
                   try {
                            con = conexao.connectDB();
-                           String sql = "UPDATE produtos SET status = 'vendido' WHERE id = ?";
+                           String sql = "UPDATE produtos SET vendido = 'Vendido' WHERE id = ?";
                            PreparedStatement stmt = con.prepareStatement(sql);
 
                            stmt.setInt(1, produtoId);
@@ -76,6 +112,39 @@ public class ProdutosDAO {
                                     }
                            }
                   }
+         }
+         public List<ProdutosDTO> listarProdutosVendidos() {
+                  List<ProdutosDTO> produtosVendidos = new ArrayList<>();
+                  conn = new conectaDAO().connectDB(); // Conexão com o banco de dados
+                  
+                  String sql = "SELECT * FROM produtos WHERE vendido = 'S'";
+                  
+                  try {
+                           prep = conn.prepareStatement(sql);
+                           ResultSet rs = prep.executeQuery();
+
+                  while (rs.next()) {
+                           ProdutosDTO produto = new ProdutosDTO();
+                           produto.setId(rs.getInt("id"));
+                           produto.setNome(rs.getString("nome"));
+                           produto.setValor(rs.getInt("valor"));
+                           produtosVendidos.add(produto);
+                  }
+         } catch (SQLException e) {
+            System.err.println("Erro ao listar produtos vendidos: " + e);
+         } finally {
+                  try {
+                           if (prep != null) {
+                                    prep.close();
+                           }
+                           if (conn != null) {
+                                    conn.close();
+                           }
+                  } catch (SQLException ex) {
+                           System.err.println("Erro ao fechar a conexão: " + ex);
+                  }
+         }
+                  return produtosVendidos;
          }
 }
 
