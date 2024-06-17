@@ -37,6 +37,7 @@ public class listagemVIEW extends javax.swing.JFrame {
                   tableModel.addColumn("Vendido");
 
                   listaProdutos.setModel(tableModel);
+                  carregarProdutos();
         }
 
     /**
